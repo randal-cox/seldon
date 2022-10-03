@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# setup the virtual environment for project seldon
+
+python3.8 -m pip install virtualenv
+python3.8 -m virtualenv venv
+source venv/bin/activate
+python3.8 -m pip install -r requirements.txt
+source bin/source

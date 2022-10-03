@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+export PYTHONPATH=./lib:$PYTHONPATH
+export PYSPARK_PYTHON=python3.8
+
+export LD_LIBRARY_PATH=./lib
+python3.8 -m virtualenv venv
+source venv/bin/activate
+python3.8 -m pip install -r requirements.txt
