@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+export PYTHONPATH=./lib:$PYTHONPATH
+export LD_LIBRARY_PATH=./lib
+
+# coverage report
+python3.8 -m pytest -s --cov-report term-missing --cov=seldon test --runslow

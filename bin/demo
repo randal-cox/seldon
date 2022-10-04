@@ -1,0 +1,27 @@
+#!/usr/bin/env python3.8
+
+import seldon.core.cli
+
+
+"""
+Commands to for project Seldon
+
+To get help
+% ./bin/demo -h
+
+or help for subcommands
+% ./bin/demo processors -h
+"""
+
+##########################################
+# Add our lib path to the sys.path
+##########################################
+import os.path
+import sys
+root_path = os.path.dirname(os.path.dirname(__file__))
+lib_path = os.path.join(root_path, 'lib')
+sys.path.append(lib_path)
+##########################################
+
+# actually call the command
+seldon.core.cli.CLI()
