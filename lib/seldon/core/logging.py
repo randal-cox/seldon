@@ -180,7 +180,7 @@ def logger(level=logging.INFO, handlers=None, reset=False):
 def logger_path():
   """Standard place for logs"""
   name = seldon.core.app.name()
-  return seldon.core.path.join('~/logs', name + '.txt')
+  return seldon.core.path.join('~/seldon/logs', name + '.txt')
 
 def logger_handler(v):
   if v == 'stderr': return logging.StreamHandler(sys.stderr)
