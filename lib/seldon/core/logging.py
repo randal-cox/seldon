@@ -10,7 +10,7 @@ def unset_logger():
   global global_logger
   global_logger = None
 
-def logger(level=logging.INFO, handlers=['log', 'stderr'], reset=False):
+def logger(level=logging.INFO, handlers=None, reset=False):
   """
       Set up the logger the way I like it and add some extra methods
       - exit     - log and exit
@@ -29,12 +29,12 @@ def logger(level=logging.INFO, handlers=['log', 'stderr'], reset=False):
         - other strings - saves to the file specified in the string
         - all others    - should be an io thing like stderr or stdout
   """
+  if handlers is None: handlers = ['log', 'stderr']
   if reset: unset_logger()
   global global_logger
   if global_logger is not None: return global_logger
 
   # Set up the basic logger with formatting the way I like
-  name = seldon.core.app.name()
   log_path = logger_path()
 
   if not isinstance(handlers, list): handlers = [handlers]
@@ -72,10 +72,10 @@ def logger(level=logging.INFO, handlers=['log', 'stderr'], reset=False):
   old_getLogger = logging.getLogger
   def updatedGetLogger(name=None):
     name = name or sys.argv[0]
-    ret = old_getLogger(name)
-    ret.add = add
-    ret.sub = sub
-    return ret
+    r = old_getLogger(name)
+    r.add = add
+    r.sub = sub
+    return r
   logging.getLogger = updatedGetLogger
 
   # log where the log file is as well as add in some standard methods
@@ -154,6 +154,7 @@ def logger(level=logging.INFO, handlers=['log', 'stderr'], reset=False):
     if rows is None: rows = df.count()
     # noinspection PyProtectedMember
     ind = ' ' * indent
+    # noinspection PyProtectedMember
     for line in df._jdf.showString(rows, 200, False).split("\n"):
       if line.strip() != '':
         target.info(ind + line)

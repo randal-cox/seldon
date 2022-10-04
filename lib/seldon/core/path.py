@@ -52,7 +52,7 @@ def glob(*args):
   else:
     return glob_base.glob(path)
 
-def glob_last(*args, maximum_date=None):
+def glob_last(*args):
   """ the alphabetically last one"""
   path = join(*args)
   if to_s3(path).startswith('s3://'):
@@ -60,7 +60,7 @@ def glob_last(*args, maximum_date=None):
   else:
     return sorted(glob_base.glob(path))[-1]
 
-def glob_first(*args, maximum_date=None):
+def glob_first(*args):
   """ the alphabetically last one"""
   path = join(*args)
   if to_s3(path).startswith('s3://'):

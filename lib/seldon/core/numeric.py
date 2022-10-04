@@ -15,23 +15,23 @@ def to_human_time(seconds):
     return '{:.1f} h'.format(1.0 * seconds / 60 / 60)
   return '{:.1f} d'.format(1.0 * seconds / 60 / 60 / 24)
 
-def to_human_bytes(bytes, long=False):
+def to_human_bytes(num_bytes, long=False):
   """Bytes in a human-readable format"""
   units = "u k m g t p e z y"
   if long: units = "uni kilo mega giga tera peta exa zetta yatta"
   units = units.strip().split()
   target = [1024 ** v for v in range(len(units))]
   for unit, size in reversed(list(zip(units, target))):
-    if bytes >= size:
-      if unit in ['u', 'uni'] and int(bytes) == 1: return '1 byte'
+    if num_bytes >= size:
+      if unit in ['u', 'uni'] and int(num_bytes) == 1: return '1 byte'
       u = unit
       if unit in ['u', 'uni']: u = ''
       u += 'b'
       if long: u += 'ytes'
-      if unit in ['u', 'uni']: return ('%d %s' % (1.0 * int(bytes) / size, u)).strip()
-      return ('%.1f %s' % (1.0 * int(bytes) / size, u)).strip()
+      if unit in ['u', 'uni']: return ('%d %s' % (1.0 * int(num_bytes) / size, u)).strip()
+      return ('%.1f %s' % (1.0 * int(num_bytes) / size, u)).strip()
 
-  return ('%d b' % int(bytes)).strip()
+  return ('%d b' % int(num_bytes)).strip()
 
 def significance(value, digits):
   """Restrict to a number of digits of significance

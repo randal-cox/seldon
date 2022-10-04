@@ -1,5 +1,6 @@
 # put list of installs here
 findspark
+pyspark
 
 pytest
 pytest-cov

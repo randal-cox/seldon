@@ -39,7 +39,7 @@ def spark(**args):
     sys.stderr.write("messy spark logging I cannot remove- just ignore it\n")
 
     # noinspection PyTypeChecker,PyTypedDict
-    spark = settings['spark'] = SparkSession.builder.appName(
+    settings['spark'] = SparkSession.builder.appName(
       str(settings['name'])
     ).config(
       'spark.ui.killEnabled', 'false'
@@ -51,4 +51,4 @@ def spark(**args):
       'spark.driver.maxResultSize', settings['max_result_size']
     ).getOrCreate()
     sys.stderr.write('#' * 100 + "\n")
-    return spark
+    return settings['spark']

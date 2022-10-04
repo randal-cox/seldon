@@ -28,6 +28,7 @@ def open(*path_parts, mode='r'):
       if os.path.exists(path_tmp): os.remove(path_tmp)
 
       if path.endswith('.gz'):
+        # noinspection PyTypeChecker
         file = fix_gzip_writer(gzip.open(path_tmp, mode))
       else:
         file = builtins.open(path_tmp, mode)
@@ -59,7 +60,10 @@ def wc_cache(*path_parts):
   if wc_cache_path == p: return
 
   # nuke any old one
-  if seldon.core.path.exists(wc_cache_path): os.remove(wc_cache_path)
+  b = seldon.core.path.exists(wc_cache_path) # noinspection PyTypeChecker
+  if b:
+    # noinspection PyTypeChecker
+    os.remove(wc_cache_path)
   wc_cache_db = {}
   wc_cache_last = time.time()
 

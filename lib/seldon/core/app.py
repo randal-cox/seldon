@@ -7,6 +7,7 @@ def is_interactive():
 
 def name():
   """Get the name of the app, handling the case of jupyter notebooks"""
-  name = os.path.basename(re.sub(r'\.[^\.]+$', '', os.path.basename(sys.argv[0])))
-  if name == 'ipykernel_launcher': name = 'jupyter'
-  return name
+  ret = os.path.basename(re.sub(r'\.[^.]+$', '', os.path.basename(sys.argv[0])))
+  if ret == 'ipykernel_launcher': ret = 'jupyter'
+  return ret
+
