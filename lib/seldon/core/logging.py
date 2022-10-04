@@ -37,12 +37,9 @@ def logger(level=logging.INFO, handlers=['log', 'stderr'], reset=False):
   name = seldon.core.app.name()
   log_path = seldon.core.path.join('~/logs', name + '.txt')
 
-  print(handlers)
-
   if not isinstance(handlers, list): handlers = [handlers]
   if len(handlers) == 0: handlers = ['log', 'stderr']
   handlers = [logger_handler(h) for h in handlers]
-  print(handlers)
 
   logging.basicConfig(
     level=level,

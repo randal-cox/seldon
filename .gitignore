@@ -1,0 +1,8 @@
+logs
+**/.ipynb_checkpoints
+venv
+data
+.pytest_caches
+.idea
+.DS_Store
+**/.DS_Store

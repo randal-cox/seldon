@@ -1,28 +1,17 @@
-import pytest, os.path, io, time, tempfile
+import pytest, os.path, io, time, tempfile, logging
 
 import seldon.core.logging
 
-def test_one():
-  #seldon.core.logging.unset_logger()
-  #with tempfile.TemporaryDirectory() as d:
-  p = os.path.join('junk.txt')
-  l = seldon.core.logging.logger(handlers=[p, 'stderr'])
-  l.info('oooooo')
-  print(p)
+# pytest is really annoying because it intercepts almost all the logging and formatting, so it is super hard
+# to test any time stamps, formatting, indentation, and so on. Until I figure out a way to supress this, I will
+# merely check that there are entries within a section
 
-  # l = seldon.core.logging.logger() #ios=[s, 'stderr'])
-  # with l.section('section'):
-  #   l.info('inside section')
-  #   l.remove('should remove some stuff')
-  # with l.progress("some progress", 10) as p:
-  #   for i in range(10):
-  #     p.step()
-  # with l.timer('name'):
-  #   time.sleep(1)
-  #
-  # # l.warning("this")
-  # #print(s.getvalue())
-  # print("================")
-  #assert(False)
-
-test_one()
+def test_section(caplog):
+  seldon.core.logging.unset_logger()
+  l = seldon.core.logging.logger(handlers=['stderr'])
+  caplog.clear()
+  caplog.set_level(logging.INFO)
+  l.warning('1')
+  with l.section('section'):
+    l.warning('2')
+  assert([r.message for r in caplog.records] == ['1', '2'])
