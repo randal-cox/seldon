@@ -7,5 +7,4 @@ def to_s(*args):
 
 def pp(*args):
   """Just pretty print"""
-  if len(args) == 1: args = args[0]
-  pprint.pformat(args, indent=2, width=120).pprint(args)
+  print(to_s(*args))

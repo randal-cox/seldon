@@ -6,6 +6,10 @@ import seldon.core.shell
 
 def test_open():
   with tempfile.TemporaryDirectory() as d:
+    p0 = os.path.join(d, 'q')
+    with pytest.raises(ValueError):
+      with seldon.core.file.open(p0, mode='?') as f: f.write('')
+
     p1 = os.path.join(d, 'f1')
     with seldon.core.file.open(p1, mode='w') as f:
       assert(not os.path.exists(p1))
@@ -26,6 +30,21 @@ def test_open():
     with seldon.core.file.open(p2) as f:
       assert(f.read() == '2')
     assert(os.path.exists(p2))
+
+    # check we create directories as needed
+    p3 = os.path.join(d, 'd', 'f3.gz')
+    with seldon.core.file.open(p3, mode='w') as f:
+      f.write('3')
+    assert(os.path.exists(p3))
+
+    with pytest.raises(ValueError):
+      p4 = 's3://bucket/path/name.txt'
+      with seldon.core.file.open(p4, 'r') as f: f.write('')
+
+    # test that the s3 stuff is not implemented yet
+    with pytest.raises(ValueError):
+      p4 = 's3://bucket/path/name.txt'
+      with seldon.core.file.open(p4) as f: f.write('')
 
 def test_stale():
   with tempfile.TemporaryDirectory() as d:
@@ -72,3 +91,17 @@ def test_update():
       n = open(inputs[0]).read() + open(inputs[1]).read()
       with seldon.core.file.open(p3, mode='w') as f: f.write(n)
     assert (not seldon.core.file.stale([p1, p2], [p3]))
+
+def test_wc():
+  contents = '1 2\n3 4\n5'
+
+  with tempfile.TemporaryDirectory() as d:
+    for n in ['f1']: #, 'f1.gz']:
+      p = os.path.join(d, n)
+      with(open(p, mode='w')) as f: f.write(contents)
+      c = seldon.core.file.wc(p)
+      assert(c.lines == 3)
+      assert(c.chars == 9)
+      assert(c.characters == 9)
+      assert(c.words == 5)
+

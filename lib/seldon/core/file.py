@@ -1,6 +1,7 @@
-import os, contextlib, builtins, gzip
+import os, contextlib, builtins, gzip, time, re, types
 
 import seldon.core.path
+import seldon.core.app
 
 @contextlib.contextmanager
 def open(*path_parts, mode='r'):
@@ -9,6 +10,8 @@ def open(*path_parts, mode='r'):
   - gzip formats for read or write
   - atomic writing so that the file is not present until the entire operation is completed
   """
+  if path_parts[-1] in ['r', 'w']:
+    raise ValueError("specify mode as mode=r|w, not as the last argument")
 
   path = seldon.core.path.join(*path_parts)
 
@@ -39,7 +42,26 @@ def open(*path_parts, mode='r'):
       yield file
       file.close()
     else:
-      raise (ValueError, "mode must be r or w only")
+      raise ValueError("mode must be r or w only")
+
+wc_cache_path = None
+wc_cache_db = None
+wc_cache_last = None
+
+def wc_cache_default_path():
+  return seldon.core.path.join('~/logs', seldon.core.app.name)
+
+def wc_cache(*path_parts):
+  global wc_cache_path
+  global wc_cache_db
+  global wc_cache_last
+  p = seldon.core.path.join(*path_parts)
+  if wc_cache_path == p: return
+
+  # nuke any old one
+  if seldon.core.path.exists(wc_cache_path): os.remove(wc_cache_path)
+  wc_cache_db = {}
+  wc_cache_last = time.time()
 
 def wc(*path_parts):
   """Get the lines, words, and characters of a file, supporting
@@ -47,7 +69,17 @@ def wc(*path_parts):
   - gzip formats
   - cache results so you don't have to spend the time to compute it again
   """
-  pass
+  wc_cache(wc_cache_default_path())
+  global wc_cache_db, wc_cache_last
+  path = seldon.core.path.join(*path_parts)
+  if path in wc_cache_db: return wc_cache_db[path]
+
+  with seldon.core.file.open(path, mode='r') as f: content = f.read()
+  lines = len(content.split("\n"))
+  chars = len(content)
+  words = len(re.findall(r'\w+', content))
+  wc_cache_db[path] = types.SimpleNamespace(lines=lines, chars=chars, characters=chars, words=words)
+  return wc_cache_db[path]
 
 def stale(inputs, outputs, remove=False):
   """Determine is a set of output paths is out-of-date relative to a list of inputs, supporting
@@ -115,8 +147,9 @@ def update(inputs, outputs, reset=False):
 #########################################
 # Monkey patching the gzipreader and writer so I don't have to encode or decode
 def new_gzip_write(self, s):
-  try: s = s.encode()
-  except AttributeError: pass
+  s = s.encode()
+  # try: s = s.encode()
+  # except AttributeError: pass
   self._old_write(s)
 
 def new_gzip_read(self): return self._old_read().decode()

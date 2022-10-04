@@ -13,7 +13,7 @@ def to_human_time(seconds):
     return '{:.1f} m'.format(1.0 * seconds / 60)
   if seconds < 24 * 60 * 60 * close:
     return '{:.1f} h'.format(1.0 * seconds / 60 / 60)
-  return '{:.1f} days'.format(1.0 * seconds / 60 / 60 / 24)
+  return '{:.1f} d'.format(1.0 * seconds / 60 / 60 / 24)
 
 def to_human_bytes(bytes, long=False):
   """Bytes in a human-readable format"""

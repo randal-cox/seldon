@@ -35,7 +35,7 @@ def logger(level=logging.INFO, handlers=['log', 'stderr'], reset=False):
 
   # Set up the basic logger with formatting the way I like
   name = seldon.core.app.name()
-  log_path = seldon.core.path.join('~/logs', name + '.txt')
+  log_path = logger_path()
 
   if not isinstance(handlers, list): handlers = [handlers]
   if len(handlers) == 0: handlers = ['log', 'stderr']
@@ -135,15 +135,11 @@ def logger(level=logging.INFO, handlers=['log', 'stderr'], reset=False):
   @contextlib.contextmanager
   def _progress(target, title=None, steps=None, update=0):
     """create a progress in the logger as a context manager"""
-    if steps == 0:
-      # don't set up anything here or do any cleanup
-      yield None
-    else:
-      # noinspection PyProtectedMember,PyUnresolvedReferences
-      title = title or sys._getframe(2).f_code.co_name
-      lp = Progress(target, title, steps, update)
-      yield lp
-      lp.stop()
+    # noinspection PyProtectedMember,PyUnresolvedReferences
+    title = title or sys._getframe(2).f_code.co_name
+    lp = Progress(target, title, steps, update)
+    yield lp
+    lp.stop()
   ret.progress = types.MethodType(_progress, ret)
 
   def _pp(target, obj):
@@ -181,10 +177,9 @@ def logger(level=logging.INFO, handlers=['log', 'stderr'], reset=False):
   return ret
 
 def logger_path():
-  # Set up the basic logger with formatting the way I like
+  """Standard place for logs"""
   name = seldon.core.app.name()
-  log_path = seldon.core.path.join('~/logs', name + '.txt')
-  return log_path
+  return seldon.core.path.join('~/logs', name + '.txt')
 
 def logger_handler(v):
   if v == 'stderr': return logging.StreamHandler(sys.stderr)
@@ -210,7 +205,7 @@ class Progress:
     """
     if steps is not None and (steps != int(steps) or steps < 0):
       msg = "Steps must be positive integer or None, not '{}'".format(steps)
-      raise Exception(msg)
+      raise ValueError(msg)
     self.logger = this_logger
     self.title = title
     self.steps = steps

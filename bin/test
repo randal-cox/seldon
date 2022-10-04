@@ -4,4 +4,5 @@ export PYTHONPATH=./lib:$PYTHONPATH
 export LD_LIBRARY_PATH=./lib
 
 python3.8 -m pytest -s "$@"
-#python3.8 -m pytest -cov=myproj -s "$@"
+# coverage report
+# python3.8 -m pytest -s --cov-report term-missing --cov=seldon test --runslow

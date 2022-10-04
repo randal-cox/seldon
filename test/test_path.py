@@ -7,6 +7,9 @@ def test_exists():
 	assert(seldon.core.path.exists(p))
 	p += 'junk'
 	assert(not seldon.core.path.exists(p))
+	with pytest.raises(ValueError):
+		seldon.core.path.exists('s3://' + p)
+
 
 def test_join():
 	assert(seldon.core.path.join('this', 'is', 'a', 'path') =='this/is/a/path')
@@ -40,27 +43,39 @@ def test_is_dir():
 	assert(not seldon.core.path.is_dir(p))
 	p = os.path.dirname(p)
 	assert(seldon.core.path.is_dir(p))
+	with pytest.raises(ValueError):
+		seldon.core.path.is_dir('s3://this')
 
 def test_mtime():
 	p = inspect.stack()[0].filename
 	assert(os.path.getmtime(p) == seldon.core.path.mtime(p))
+	with pytest.raises(ValueError):
+		seldon.core.path.mtime('s3://this')
 
 def test_size():
 	p = inspect.stack()[0].filename
 	assert(os.path.getsize(p) == seldon.core.path.size(p))
+	with pytest.raises(ValueError):
+		seldon.core.path.size('s3://this')
 
 def test_glob():
 	p = os.path.join(inspect.stack()[0].filename.replace('.py',''),'*')
 	hits = sorted([os.path.basename(h) for h in seldon.core.path.glob(p)])
 	assert(['a.txt', 'b.txt', 'c.txt'] == hits)
+	with pytest.raises(ValueError):
+		seldon.core.path.glob('s3://this')
 
 def test_glob_last():
 	p = os.path.join(inspect.stack()[0].filename.replace('.py',''),'*')
 	assert('c.txt' == os.path.basename(seldon.core.path.glob_last(p)))
+	with pytest.raises(ValueError):
+		seldon.core.path.glob_last('s3://this')
 
 def test_glob_first():
 	p = os.path.join(inspect.stack()[0].filename.replace('.py',''),'*')
 	assert('a.txt' == os.path.basename(seldon.core.path.glob_first(p)))
+	with pytest.raises(ValueError):
+		seldon.core.path.glob_first('s3://this')
 
 def test_rm():
 	with tempfile.TemporaryDirectory() as d:

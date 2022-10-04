@@ -4,6 +4,10 @@ import seldon.core.spark
 
 @pytest.mark.slow
 def test_spark():
+  seldon.core.spark.spark()
+
+@pytest.mark.slow
+def test_data_frames():
   rows = [
       ("Finance",10),
       ("Marketing",20),
@@ -19,4 +23,3 @@ def test_spark():
     df2 = spark.read.parquet(p1)
     for row in zip(df1.collect(), df2.collect()):
       assert(row[0] == row[1])
-

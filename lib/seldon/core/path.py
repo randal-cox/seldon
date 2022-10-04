@@ -5,8 +5,8 @@ import seldon.core.caller, seldon.core.list
 def exists(*args):
   """Check if file exists, allowing for paths on s3"""
   path = join(*args)
-  if to_s3(path).startwith('s3://'):
-    raise Exception("Have to write exists for s3")
+  if to_s3(path).startswith('s3://'):
+    raise ValueError("Have to write exists for s3")
   return os.path.exists(path)
 
 def join(*args):
@@ -67,16 +67,6 @@ def glob_first(*args, maximum_date=None):
     raise ValueError("Have not done exists for s3")
   else:
     return sorted(glob_base.glob(path))[0]
-
-def exists(*args):
-  """Returns true if the path exists, supporitng
-  - file paths on S3
-  """
-  path = join(*args)
-  if to_s3(path).startswith('s3://'):
-    raise ValueError("Have not done exists for s3")
-  else:
-    return os.path.exists(path)
 
 def rm(*args):
   path = join(*args)
