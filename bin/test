@@ -4,3 +4,4 @@ export PYTHONPATH=./lib:$PYTHONPATH
 export LD_LIBRARY_PATH=./lib
 
 python3.8 -m pytest -s "$@"
+#python3.8 -m pytest -cov=myproj -s "$@"

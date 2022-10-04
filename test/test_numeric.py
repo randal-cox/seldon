@@ -4,9 +4,12 @@ import seldon.core.numeric
 
 def test_to_human_time():
   assert(seldon.core.numeric.to_human_time(0) == '0.0 µs')
+  assert(seldon.core.numeric.to_human_time(.2) == '200.0 ms')
   assert(seldon.core.numeric.to_human_time(10) == '10.0 s')
   assert(seldon.core.numeric.to_human_time(40) == '40.0 s')
   assert(seldon.core.numeric.to_human_time(59) == '1.0 m')
+  assert(seldon.core.numeric.to_human_time(60*60*2) == '2.0 h')
+  assert(seldon.core.numeric.to_human_time(60*60*24*2) == '2.0 d')
 
 def test_to_human_bytes():
   assert(seldon.core.numeric.to_human_bytes(0) == '0 b')

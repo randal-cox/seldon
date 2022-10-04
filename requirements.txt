@@ -1,4 +1,5 @@
 # put list of installs here
-pytest
-
 findspark
+
+pytest
+pytest-cov
