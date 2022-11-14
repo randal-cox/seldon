@@ -15,4 +15,4 @@ def test_pp():
   new_out = sys.stdout = io.StringIO()
   seldon.core.struct.pp(s)
   sys.stdout = old_out
-  assert(new_out.getvalue(), '[1, 2, 3]')
+  assert (new_out.getvalue() == '[1, 2, 3]\n')
