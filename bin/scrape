@@ -1,0 +1,71 @@
+#!/usr/bin/osascript
+
+to goToWebPage(theWebPage)
+  tell application "Safari"
+    activate
+    set URL of document 1 to theWebPage
+    repeat
+      delay 1
+      if (do JavaScript "document.readyState" in document 1) is "complete" then exit repeat
+    end repeat
+
+    tell application "System Events"
+        repeat 30000 times
+          key code 121 -- # Down Arrow
+          delay 1
+        end repeat
+    end tell
+   
+ end tell
+end goToWebPage
+
+to scrape()
+  tell application "Safari"
+    activate
+    
+    set js = "my div = document.querySelector('#stories-list.'); for (var i = div.length - 1; i >= 0; i--) {}"
+{
+  menus[i].className = "style1";
+}" + ¬
+            ""
+    
+    
+  end tell
+end goToWebPage
+
+#goToWebPage("https://fetlife.com/users/1797408/activity")
+scrape()
+
+#data-template-id
+#stories-list
+
+
+# tell application "Safari"
+# 	activate
+# 	set sc to 0
+# 	repeat
+# 		set thescript to "if((window.pageYOffset + window.innerHeight)<document.body.clientHeight)
+# 		{
+#     	window.scrollBy(0,10); // horizontal and vertical scroll increments
+# 		}"
+# 		do JavaScript thescript in current tab of first window
+# 		set imagePath to (path to desktop as text) & "screenCapture_" & my zero_pad(sc, 6) & ".png"
+# 		delay 1.5
+# 		do shell script "screencapture -o -mx -T0 " & quoted form of POSIX path of imagePath
+# 		delay 0.5
+# 		set sc to sc + 1
+# 	end repeat
+# 	
+# end tell
+# 
+# on zero_pad(value, string_length)
+# 	set string_zeroes to ""
+# 	set digits_to_pad to string_length - (length of (value as string))
+# 	if digits_to_pad > 0 then
+# 		repeat digits_to_pad times
+# 			set string_zeroes to string_zeroes & "0" as string
+# 		end repeat
+# 	end if
+# 	set padded_value to string_zeroes & value as string
+# 	return padded_value
+# end zero_pad

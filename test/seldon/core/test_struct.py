@@ -1,13 +1,16 @@
-import pytest, sys, io
+import io
+import sys
 
 import seldon.core.struct
 
+
 def test_to_s():
-  s = [1,2,3]
-  assert(seldon.core.struct.to_s(s) == '[1, 2, 3]')
+  s = [1, 2, 3]
+  assert (seldon.core.struct.to_s(s) == '[1, 2, 3]')
+
 
 def test_pp():
-  s = [1,2,3]
+  s = [1, 2, 3]
   old_out = sys.stdout
   new_out = sys.stdout = io.StringIO()
   seldon.core.struct.pp(s)

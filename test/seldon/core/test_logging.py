@@ -1,6 +1,11 @@
-import pytest, os.path, io, time, tempfile, logging
+import io
+import logging
+import os.path
+import tempfile
 
+import pytest
 import seldon.core.logging
+
 
 # pytest is really annoying because it intercepts almost all the logging and formatting, so it is super hard
 # to test any time stamps, formatting, indentation, and so on. Until I figure out a way to supress this, I will

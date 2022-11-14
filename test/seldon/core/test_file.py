@@ -1,8 +1,11 @@
-import pytest, os.path, tempfile
+import os.path
+import tempfile
 
+import pytest
 import seldon.core.file
 import seldon.core.path
 import seldon.core.shell
+
 
 def test_open():
   with tempfile.TemporaryDirectory() as d:

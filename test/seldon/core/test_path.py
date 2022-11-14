@@ -1,12 +1,16 @@
-import pytest, os.path, inspect, tempfile, glob, subprocess
+import inspect
+import os.path
+import tempfile
 
+import pytest
 import seldon.core.path
+
 
 def test_exists():
 	p = inspect.stack()[0].filename
-	assert(seldon.core.path.exists(p))
+	assert (seldon.core.path.exists(p))
 	p += 'junk'
-	assert(not seldon.core.path.exists(p))
+	assert (not seldon.core.path.exists(p))
 	with pytest.raises(ValueError):
 		seldon.core.path.exists('s3://' + p)
 

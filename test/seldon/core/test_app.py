@@ -1,5 +1,3 @@
-import pytest
-
 import seldon.core.app
 
 def test_is_interactive():

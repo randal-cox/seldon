@@ -1,6 +1,7 @@
-import pytest, os.path
+import os.path
 
 import seldon.core.caller
+
 
 def test_line():
   # this is super fragile since it can move around. Keep it HERE

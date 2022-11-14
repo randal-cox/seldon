@@ -1,6 +1,7 @@
-import pytest, io
+import io
 
 import seldon.core.stdio
+
 
 def test_redirect():
   s = io.StringIO('')

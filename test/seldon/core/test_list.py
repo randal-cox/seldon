@@ -1,5 +1,3 @@
-import pytest, os.path
-
 import seldon.core.list
 
 def test_flatten():

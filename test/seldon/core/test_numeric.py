@@ -1,5 +1,3 @@
-import pytest, os.path
-
 import seldon.core.numeric
 
 def test_to_human_time():

@@ -1,10 +1,14 @@
-import pytest, io, tempfile, os.path
+import os.path
+import tempfile
 
+import pytest
 import seldon.core.spark
+
 
 @pytest.mark.slow
 def test_spark():
   seldon.core.spark.spark()
+
 
 @pytest.mark.slow
 def test_data_frames():
